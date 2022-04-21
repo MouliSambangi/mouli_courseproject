@@ -15,7 +15,6 @@ output_result = {
 }
 
 
-
 @app.route('/')
 def form():
     return """
