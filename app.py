@@ -4,6 +4,7 @@ import os
 import argparse
 import io
 import csv
+import time
 
 app = Flask(__name__)
 
@@ -146,6 +147,7 @@ def main(select_file_list, minimum_support):
 
 @app.route('/apriori', methods=["POST"])
 def transform_view():
+    record_time = time.time()
     try:
         f = request.files['data_file']
         name = f.filename
@@ -163,6 +165,6 @@ def transform_view():
         output_result["result"] = apriori_gen(l, int(minimum_support))
         print(output_result['result'])
         print("End - total items:", output_result['total'])
-        return str("Data File Name: "+name +"             Minimum support: "+minimum_support+"            "+str(output_result['result'])+ "               "+ "End Total items: "+str(len(output_result['result'])) )
+        return str("Data File Name: "+name +" Minimum support: "+minimum_support+" "+str(output_result['result'])+ " "+ "End Total items: "+str(len(output_result['result']))+" Time taken: "+str( round((time.time() - record_time), 3) )+" Seconds" )
     except Exception as e:
         return " *Must provide Minimum support value,  "+ str(e)
